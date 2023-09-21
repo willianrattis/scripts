@@ -129,7 +129,7 @@ cd ..
 mkdir src && cd src
 dotnet new webapi -o "$full_company_name.$api_name.Api"
 dotnet new classlib -o "$full_company_name.$api_name.Corporate"
-cd "$full_company_name.$api_name.Api"
+cd "$full_company_name.$api_name.Api" && dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection --source https://api.nuget.org/v3/index.json
 
 # Criar as pastas adicionais dentro da API
 mkdir Configuration Extensions Helpers Mappings Requests Responses Services
