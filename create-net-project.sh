@@ -45,13 +45,15 @@ mkdir src && cd src
 dotnet new webapi -o "$full_company_name.$api_name.Api"
 dotnet new classlib -o "$full_company_name.$api_name.Corporate"
 cd "$full_company_name.$api_name.Api" && dotnet add reference "../$full_company_name.$api_name.Corporate/"
+cd ..
+cd "$full_company_name.$api_name.Corporate" && dotnet add package Refit --source https://api.nuget.org/v3/index.json
 cd ../..
 
 # Criar projetos em tests e adicionar referências
 mkdir tests && cd tests
 dotnet new xunit -o "$full_company_name.$api_name.Api.UnitTests"
 dotnet new xunit -o "$full_company_name.$api_name.Api.IntegrationTests"
-cd "$full_company_name.$api_name.Api.IntegrationTests" && dotnet add reference "../../src/$full_company_name.$api_name.Api/"
+cd "$full_company_name.$api_name.Api.IntegrationTests" && dotnet add reference "../../src/$full_company_name.$api_name.Api/" && dotnet add package WireMock.Net --source https://api.nuget.org/v3/index.json
 cd ..
 cd "$full_company_name.$api_name.Api.UnitTests" && dotnet add reference "../../src/$full_company_name.$api_name.Api/"
 cd ../..
