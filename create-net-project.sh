@@ -45,6 +45,86 @@ mkdir "$short_company_name-backend-$api_name_root" && cd "$short_company_name-ba
 git init && git branch -M main && dotnet new gitignore
 dotnet new globaljson --sdk-version 6.0.408
 
+# Antes de criar os projetos, vamos criar a pasta .vscode e os arquivos json
+mkdir .vscode && cd .vscode
+
+# Gerar launch.json
+echo "{
+    \"version\": \"0.2.0\",
+    \"configurations\": [
+        {
+            \"name\": \".NET Core Launch (web)\",
+            \"type\": \"coreclr\",
+            \"request\": \"launch\",
+            \"preLaunchTask\": \"build\",
+            \"program\": \"\${workspaceFolder}/src/$full_company_name.$api_name.Api/bin/Debug/net6.0/$full_company_name.$api_name.Api.dll\",
+            \"args\": [],
+            \"cwd\": \"\${workspaceFolder}/src/$full_company_name.$api_name.Api\",
+            \"stopAtEntry\": false,
+            \"serverReadyAction\": {
+                \"action\": \"openExternally\",
+                \"pattern\": \"\\\\bNow listening on:\\\\s+(https?://\\\\S+)\"
+            },
+            \"env\": {
+                \"ASPNETCORE_ENVIRONMENT\": \"Development\"
+            },
+            \"sourceFileMap\": {
+                \"/Views\": \"\${workspaceFolder}/Views\"
+            }
+        },
+        {
+            \"name\": \".NET Core Attach\",
+            \"type\": \"coreclr\",
+            \"request\": \"attach\"
+        }
+    ]
+}" > launch.json
+
+# Gerar tasks.json
+echo "{
+    \"version\": \"2.0.0\",
+    \"tasks\": [
+        {
+            \"label\": \"build\",
+            \"command\": \"dotnet\",
+            \"type\": \"process\",
+            \"args\": [
+                \"build\",
+                \"\${workspaceFolder}/$full_company_name.$api_name.sln\",
+                \"/property:GenerateFullPaths=true\",
+                \"/consoleloggerparameters:NoSummary\"
+            ],
+            \"problemMatcher\": \"\$msCompile\"
+        },
+        {
+            \"label\": \"publish\",
+            \"command\": \"dotnet\",
+            \"type\": \"process\",
+            \"args\": [
+                \"publish\",
+                \"\${workspaceFolder}/$full_company_name.$api_name.sln\",
+                \"/property:GenerateFullPaths=true\",
+                \"/consoleloggerparameters:NoSummary\"
+            ],
+            \"problemMatcher\": \"\$msCompile\"
+        },
+        {
+            \"label\": \"watch\",
+            \"command\": \"dotnet\",
+            \"type\": \"process\",
+            \"args\": [
+                \"watch\",
+                \"run\",
+                \"--project\",
+                \"\${workspaceFolder}/$full_company_name.$api_name.sln\"
+            ],
+            \"problemMatcher\": \"\$msCompile\"
+        }
+    ]
+}" > tasks.json
+
+cd ..
+
 # Criar projetos em src e adicionar referências
 mkdir src && cd src
 dotnet new webapi -o "$full_company_name.$api_name.Api"
