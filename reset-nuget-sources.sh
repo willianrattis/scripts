@@ -23,8 +23,8 @@ echo
 # Step 2: Remove each NuGet source individually
 echo "${BOLD}${YELLOW}Removing NuGet sources...${RESET}"
 dotnet nuget remove source "nuget.org"
+dotnet nuget remove source "Online"
 dotnet nuget remove source "Core"
-dotnet nuget remove source "Via"
 echo
 echo
 
